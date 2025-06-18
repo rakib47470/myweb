@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -183,7 +182,6 @@
       border: 2px solid #01fe87;
       border-radius: 8px;
       padding: 8px;
-      /* Removed margin-bottom: 2px; */
       font-size: 16px;
       font-weight: bold;
       text-align: center;
@@ -212,7 +210,6 @@
 
     /* Master Reset Button specific styles */
     .master-reset-button {
-      /* display: none; will hide the button */
       display: none; /* Master Reset button is now hidden as per request */
       background: linear-gradient(45deg, #e74c3c, #c0392b);
       color: white;
@@ -248,12 +245,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      /* Use display: none; instead of visibility/opacity for true space removal */
-      display: none; /* Start hidden, takes no space */
-      transition: none; /* No transition for display change */
+      display: none; 
+      transition: none; 
     }
     #nameLoadingAnimation.show {
-        display: flex; /* Show when active */
+        display: flex; 
     }
 
     .spinner {
@@ -309,19 +305,12 @@
       <div class="count" id="uidCount">Total UIDs Found: 0</div>
       <div class="copy-box" id="copyIdMessageBox"></div>
 
-      <div class="label">Type your custom password to copy:</div>
-      <input type="text" id="inputPassword" placeholder="Example: RAKIB">
-      <div class="output" id="outputPassword" onclick="copyPassword()"></div>
-      <div class="copy-box" id="copyIdPasswordBox"></div>
-      <div style="display: flex; gap: 8px; margin-top: 5px;">
-        <button class="button copy" onclick="copyPassword()">Copy Password</button>
-        <button class="button clear" onclick="clearPassword()">Clear</button> </div>
-
       <div class="label">Click to copy name:</div>
       <div class="output clickable-name" id="randomName" onclick="copyName()"></div>
       <div id="nameLoadingAnimation"></div> 
       <div class="copy-box" id="copyIdNameBox"></div>
-      <div style="display: flex; gap: 8px; margin-top: 2px;"> <button class="button copy" onclick="copyName()">Copy Name</button>
+      <div style="display: flex; gap: 8px; margin-top: 2px;"> 
+        <button class="button copy" onclick="copyName()">Copy Name</button>
         <button class="button clear" onclick="changeName()">Change Name</button>
       </div>
       <div class="count" id="nameStatus"></div>
@@ -339,70 +328,56 @@
     let lastCopied = localStorage.getItem("lastCopiedName") || "";
     
     // API Name Loading Configuration
-    const TOTAL_TARGET_API_NAMES = 20000; // মোট 20,000 নাম টার্গেট
-    const API_BATCH_SIZE = 5000; // প্রতিবার 5000 করে নাম লোড হবে
-    const API_LOAD_INTERVAL_MS = 60 * 60 * 1000; // 1 ঘণ্টা পর পর লোড হবে (অথবা 30 * 60 * 1000 for 30 minutes)
+    const TOTAL_TARGET_API_NAMES = 20000; 
+    const API_BATCH_SIZE = 5000; 
+    const API_LOAD_INTERVAL_MS = 60 * 60 * 1000; 
     
-    let apiNames = []; // এই ভেরিয়েবলটি এখন DOMContentLoaded এ localStorage থেকে লোড হবে এবং প্রয়োজনে ট্রিম করা হবে
-    let totalApiLoadedNames = 0; // মোট কতগুলো API নাম লোড হয়েছে তা ট্র্যাক করবে, DOMContentLoaded এ সেট হবে
-    let isFetchingApiName = false; // একই সময়ে একাধিক API ফেচ আটকাবে
-    let apiFetchScheduled = false; // একাধিক টাইমার আটকাবে
-
-    // Set a default base password if none is saved
-    const DEFAULT_BASE_PASSWORD = "RAKIB";
+    let apiNames = []; 
+    let totalApiLoadedNames = 0; 
+    let isFetchingApiName = false; 
+    let apiFetchScheduled = false; 
 
     const randomNameDisplay = document.getElementById("randomName");
     const nameLoadingAnimation = document.getElementById("nameLoadingAnimation");
-    const inputPassword = document.getElementById("inputPassword");
-    const outputPassword = document.getElementById("outputPassword");
+    // Removed inputPassword and outputPassword DOM references
     const totalNamesCountElement = document.getElementById("totalNamesCount");
     const numberInput = document.getElementById("numberInput");
     const extractedNumber = document.getElementById("extractedNumber");
     const autoClearMessage = document.getElementById("autoClearMessage");
 
-    // This will hold all names (default + imported + API) for selection
     let allNames = []; 
 
-    // Helper function to get today's date in DD format
+    // Helper function to get today's date in DD format (no longer used for password but kept for potential future use)
     function getTodayDateDD() {
       const today = new Date();
       const day = String(today.getDate()).padStart(2, '0');
       return `${day}`;
     }
 
-    // Function to format the password with #@DD
-    function formatPassword(basePassword) {
-      const todayDate = getTodayDateDD();
-      return `${basePassword}@${todayDate}`;
-    }
-
     // Function to combine all name sources and update the active pool
     function updateAllNamesList() {
-        // localStorage থেকে API নামগুলো সবসময় আপ-টু-ডেট থাকবে, প্রয়োজনে ট্রিম করা হবে
         let storedApiNames = JSON.parse(localStorage.getItem('apiNames') || '[]');
         if (storedApiNames.length > TOTAL_TARGET_API_NAMES) {
             storedApiNames = storedApiNames.slice(0, TOTAL_TARGET_API_NAMES);
-            localStorage.setItem('apiNames', JSON.stringify(storedApiNames)); // ট্রিম করা সংস্করণ সেভ করা হচ্ছে
+            localStorage.setItem('apiNames', JSON.stringify(storedApiNames)); 
             console.warn(`API names in localStorage were trimmed from over ${TOTAL_TARGET_API_NAMES} to ${TOTAL_TARGET_API_NAMES}.`);
         }
-        apiNames = storedApiNames; // গ্লোবাল apiNames ভেরিয়েবল আপডেট করা
-        totalApiLoadedNames = apiNames.length; // মোট লোড হওয়া API নামের সংখ্যা আপডেট করা
+        apiNames = storedApiNames; 
+        totalApiLoadedNames = apiNames.length; 
 
         const combinedNames = new Set([...defaultNames, ...importedNames, ...apiNames]);
         allNames = Array.from(combinedNames);
-        updateTotalNamesCount(); // মোট নামের সংখ্যা আপডেট করবে
+        updateTotalNamesCount(); 
     }
 
     // New function to update the total names count display
     function updateTotalNamesCount() {
-        // এখন শুধু মোট উপলব্ধ নাম দেখানো হবে (API লোড হওয়া সংখ্যা আলাদাভাবে দেখাবে না)
         totalNamesCountElement.innerText = `Total Names Available: ${allNames.length}`;
     }
 
     // Function to fetch and add names to localStorage
     async function fetchAndStoreApiNames(count) {
         if (totalApiLoadedNames >= TOTAL_TARGET_API_NAMES || isFetchingApiName) {
-            // If target reached or already fetching, hide animation and return
             nameLoadingAnimation.classList.remove('show');
             return;
         }
@@ -423,33 +398,26 @@
 
             const newNames = data.results.map(x => `${x.name.first} ${x.name.last}`);
             
-            // বর্তমান apiNames এবং নতুন নামগুলো একত্রিত করে ডুপ্লিকেট বাদ দেওয়া
             const combinedUniqueNames = new Set([...apiNames, ...newNames]);
             let updatedApiNames = Array.from(combinedUniqueNames);
             
-            // নিশ্চিত করা হচ্ছে যে apiNames TOTAL_TARGET_API_NAMES অতিক্রম না করে
             if (updatedApiNames.length > TOTAL_TARGET_API_NAMES) {
                 updatedApiNames = updatedApiNames.slice(0, TOTAL_TARGET_API_NAMES);
             }
 
-            apiNames = updatedApiNames; // গ্লোবাল apiNames ভেরিয়েবল আপডেট করা
+            apiNames = updatedApiNames; 
             
-            // localStorage-এ আপডেট করা (এটি কিছুটা ধীর হতে পারে)
             localStorage.setItem('apiNames', JSON.stringify(apiNames));
             
-            // মোট লোড হওয়া API নামের সংখ্যা আপডেট করা
             totalApiLoadedNames = apiNames.length;
 
             console.log(`API: Loaded ${newNames.length} names. Total unique API names: ${totalApiLoadedNames}`);
-            // No message when 20000 names are loaded
             nameLoadingAnimation.innerHTML = `Loaded names (${totalApiLoadedNames}/${TOTAL_TARGET_API_NAMES}).`;
 
-            // যদি টার্গেট পূরণ না হয়, তাহলে পরের লোড শিডিউল করা
             if (totalApiLoadedNames < TOTAL_TARGET_API_NAMES) {
                 scheduleNextApiLoad();
             } else {
                 console.log("Target API names reached.");
-                // Immediately hide animation if target is reached
                 nameLoadingAnimation.classList.remove('show'); 
             }
 
@@ -458,24 +426,23 @@
             nameLoadingAnimation.innerHTML = `Failed to load names. (${totalApiLoadedNames} so far)`;
         } finally {
             isFetchingApiName = false;
-            // Short delay before hiding if not already hidden (e.g., on error or partial load)
             if (totalApiLoadedNames < TOTAL_TARGET_API_NAMES) {
               setTimeout(() => { nameLoadingAnimation.classList.remove('show'); }, 3000); 
             } else {
-                nameLoadingAnimation.classList.remove('show'); // Ensure hidden if target met
+                nameLoadingAnimation.classList.remove('show'); 
             }
-            updateAllNamesList(); // API লোড হওয়ার পর মোট নামের সংখ্যা আপডেট করা
+            updateAllNamesList(); 
         }
     }
 
     // পরের API লোড শিডিউল করা
     function scheduleNextApiLoad() {
         if (totalApiLoadedNames < TOTAL_TARGET_API_NAMES && !apiFetchScheduled) {
-            apiFetchScheduled = true; // ফ্ল্যাগ সেট করা যাতে একাধিকবার শিডিউল না হয়
+            apiFetchScheduled = true; 
             setTimeout(() => {
-                apiFetchScheduled = false; // ডিলের পর ফ্ল্যাগ রিসেট করা
+                apiFetchScheduled = false; 
                 const remainingToFetch = TOTAL_TARGET_API_NAMES - totalApiLoadedNames;
-                const nextBatchSize = Math.min(API_BATCH_SIZE, remainingToFetch); // 5000 বা বাকি থাকা নাম
+                const nextBatchSize = Math.min(API_BATCH_SIZE, remainingToFetch); 
                 if (nextBatchSize > 0) {
                     fetchAndStoreApiNames(nextBatchSize);
                 }
@@ -488,15 +455,14 @@
       const input = numberInput.value;
       const lines = input.split(/\r?\n/);
       const outputLines = [];
-      let count = 0; // Initialize count for UIDs found
+      let count = 0; 
       for (let line of lines) {
-        // Regex to match common Facebook link patterns or a standalone 10+ digit UID
         const match = line.match(/(?:id=|profile\/|user\/|fbid=)?(\d{10,})/);
         if (match) {
-          outputLines.push(match[1]); // Push the extracted UID
-          count++; // Increment count only if a UID is found
+          outputLines.push(match[1]); 
+          count++; 
         } else {
-          outputLines.push(''); // Push an empty string if no UID is found on this line
+          outputLines.push(''); 
         }
       }
       extractedNumber.value = outputLines.join("\n");
@@ -534,7 +500,6 @@
             navigator.clipboard.writeText(textToCopy)
                 .then(() => {
                     showCopyMessage(messageBoxId, "UIDs Copied!");
-                    // ইনপুট, আউটপুট বক্স এবং UID কাউন্টার ক্লিয়ার করা হচ্ছে
                     numberInput.value = ''; 
                     extractedNumber.value = '';
                     document.getElementById("uidCount").innerText = "Total UIDs Found: 0";
@@ -566,28 +531,6 @@
         }, 1000); 
     }
 
-    // MODIFIED: This function now only copies the formatted password.
-    function copyPassword() {
-      const passwordToCopy = outputPassword.innerText; 
-      navigator.clipboard.writeText(passwordToCopy)
-        .then(() => {
-          showCopyMessage("copyIdPasswordBox", "Password Copied!");
-        })
-        .catch(err => {
-          console.error("Failed to copy password:", err);
-          showCopyMessage("copyIdPasswordBox", "Failed to copy.");
-        });
-    }
-
-    // NEW FUNCTION: Only clears the password input and resets the output to default.
-    function clearPassword() {
-      inputPassword.value = ""; 
-      outputPassword.innerText = formatPassword(DEFAULT_BASE_PASSWORD); 
-      localStorage.setItem('savedBasePassword', DEFAULT_BASE_PASSWORD); 
-      showCopyMessage("copyIdPasswordBox", "Password cleared!"); 
-    }
-
-
     // Function for clearing UID related fields only
     function clearUIDFields() {
       numberInput.value = "";
@@ -599,10 +542,7 @@
     function masterResetAllData() {
       clearUIDFields();
       
-      inputPassword.value = "";
-      outputPassword.innerText = formatPassword(DEFAULT_BASE_PASSWORD);
-      localStorage.removeItem("savedBasePassword");
-
+      // Password related clearings removed
       document.getElementById("randomName").innerText = ""; 
       document.getElementById("nameStatus").innerText = ""; 
       localStorage.removeItem("importedNames"); 
@@ -610,32 +550,28 @@
       localStorage.removeItem("copiedCount");
       localStorage.removeItem("lastCopiedName");
       
-      // API নামগুলো localStorage থেকে এবং মেমরি থেকে মুছে ফেলা হচ্ছে
       localStorage.removeItem("apiNames");
-      apiNames = []; // গ্লোবাল apiNames রিসেট করা হচ্ছে
-      totalApiLoadedNames = 0; // মোট লোড হওয়া API নাম রিসেট করা হচ্ছে
+      apiNames = []; 
+      totalApiLoadedNames = 0; 
 
       importedNames = [];
       usedNames = [];
       copiedCount = 0;
       lastCopied = "";
       
-      updateAllNamesList(); // সব নামের তালিকা আপডেট করা হচ্ছে (এখন API নাম ছাড়া)
-      changeName(); // একটি নতুন নাম দেখানোর চেষ্টা করা হচ্ছে
+      updateAllNamesList(); 
+      changeName(); 
     }
 
     // UPDATED: displayRandomName এখন সব সোর্স (ডিফল্ট, ইম্পোর্ট করা, এবং API থেকে) থেকে নাম নির্বাচন করবে
     async function displayRandomName() {
-        // প্রতিবার নাম দেখানোর আগে সব নামের তালিকা আপডেট করা হচ্ছে
         updateAllNamesList(); 
 
         if (allNames.length === 0) {
             randomNameDisplay.innerText = "No names available.";
-            // যদি নাম না থাকে এবং API লোডিং টার্গেট পূরণ না হয়, তাহলে API লোড ট্রিগার করা
             if (totalApiLoadedNames < TOTAL_TARGET_API_NAMES && !isFetchingApiName) {
-                fetchAndStoreApiNames(API_BATCH_SIZE); // 5000 নাম লোড করার চেষ্টা করবে
+                fetchAndStoreApiNames(API_BATCH_SIZE); 
             } else {
-              // If no names and no more API names to fetch, hide the animation area
               nameLoadingAnimation.classList.remove('show');
             }
             return;
@@ -644,17 +580,15 @@
         let availableNames = allNames.filter(name => !usedNames.includes(name));
 
         if (availableNames.length === 0) {
-            // যদি সব নাম ব্যবহার হয়ে যায়, usedNames রিসেট করা
             usedNames = [];
             localStorage.setItem("usedNames", JSON.stringify(usedNames));
-            availableNames = allNames; // এখন সব নাম আবার উপলব্ধ
+            availableNames = allNames; 
             console.log("All names used. Used names list has been reset.");
         }
 
         const randomIndex = Math.floor(Math.random() * availableNames.length);
         const name = availableNames[randomIndex];
 
-        // ফেড-আউট অ্যানিমেশন প্রয়োগ করা
         randomNameDisplay.classList.remove('fade-in');
         randomNameDisplay.classList.add('fade-out');
 
@@ -662,12 +596,11 @@
             randomNameDisplay.innerText = name;
             usedNames.push(name);
             localStorage.setItem("usedNames", JSON.stringify(usedNames));
-            updateStatus(); // স্ট্যাটাস ডিসপ্লে আপডেট করা
+            updateStatus(); 
 
-            // ফেড-ইন অ্যানিমেশন প্রয়োগ করা
             randomNameDisplay.classList.remove('fade-out');
             randomNameDisplay.classList.add('fade-in');
-        }, 300); // ফেড-আউট অ্যানিমেশনের সময়কাল
+        }, 300); 
     }
 
     function changeName() {
@@ -712,17 +645,16 @@
         localStorage.removeItem("copiedCount");
         localStorage.removeItem("lastCopiedName");
         
-        // API নামগুলো localStorage থেকে এবং মেমরি থেকে মুছে ফেলা হচ্ছে
         localStorage.removeItem("apiNames");
-        apiNames = []; // গ্লোবাল apiNames রিসেট করা হচ্ছে
-        totalApiLoadedNames = 0; // মোট লোড হওয়া API নাম রিসেট করা হচ্ছে
+        apiNames = []; 
+        totalApiLoadedNames = 0; 
         
         usedNames = [];
         copiedCount = 0;
         lastCopied = "";
         
         updateStatus();
-        updateAllNamesList(); // API নাম মুছে ফেলার পর মোট নামের সংখ্যা আপডেট করা হচ্ছে
+        updateAllNamesList(); 
         
         showAutoClearMessage("আপনার History Clear করা হয়েছে!");
         console.log("Copy history cleared automatically.");
@@ -746,55 +678,26 @@
 
     // Event Listeners
     document.addEventListener("DOMContentLoaded", () => {
-      // DOM লোড হওয়ার সাথে সাথে সব নামের তালিকা আপডেট করা হচ্ছে (প্রয়োজনে localStorage থেকে ট্রিম করে)
       updateAllNamesList(); 
-      
-      // প্রাথমিকভাবে একটি নাম প্রদর্শন করা হচ্ছে
       changeName(); 
 
-      // প্রাথমিক API নাম লোডিং লজিক
       if (totalApiLoadedNames < TOTAL_TARGET_API_NAMES) {
           const initialBatchSize = Math.min(API_BATCH_SIZE, TOTAL_TARGET_API_NAMES - totalApiLoadedNames);
           if (initialBatchSize > 0) {
               fetchAndStoreApiNames(initialBatchSize);
           }
       } 
-      // If target is already met or initial fetch isn't needed, hide the animation area
       if (totalApiLoadedNames >= TOTAL_TARGET_API_NAMES || (totalApiLoadedNames === 0 && TOTAL_TARGET_API_NAMES === 0) ) {
         nameLoadingAnimation.classList.remove('show');
       }
 
-
-      updateStatus(); // স্ট্যাটাস ডিসপ্লে আপডেট করা
+      updateStatus(); 
 
       numberInput.addEventListener("input", extractNumber);
-
-      // extractedNumber টেক্সটএরিয়াতে ক্লিক করলে কপি এবং ক্লিয়ার করার ইভেন্ট লিসেনার যোগ করা হয়েছে
       extractedNumber.addEventListener('click', copyAndClearUID);
       
-      // পেজ লোডে সেভ করা বেস পাসওয়ার্ড লোad করা বা ডিফল্ট সেট করা
-      let savedBasePassword = localStorage.getItem('savedBasePassword');
-      if (savedBasePassword !== null) { 
-        inputPassword.value = savedBasePassword; 
-      } else {
-        inputPassword.value = ""; 
-        localStorage.setItem('savedBasePassword', DEFAULT_BASE_PASSWORD); 
-      }
+      // Removed password-related event listeners
       
-      // প্রাথমিকভাবে ইনপুট বা ডিফল্টের উপর ভিত্তি করে আউটপুট পাসওয়ার্ড সেট করা
-      outputPassword.innerText = formatPassword(inputPassword.value || DEFAULT_BASE_PASSWORD); 
-
-      // inputPassword-এ ফোকাস চলে গেলে (blur) আউটপুট পাসওয়ার্ড আপডেট করার ইভেন্ট লিসেনার যোগ করা
-      inputPassword.addEventListener('blur', () => {
-          const basePassword = inputPassword.value;
-          outputPassword.innerText = formatPassword(basePassword || DEFAULT_BASE_PASSWORD);
-          localStorage.setItem('savedBasePassword', basePassword);
-      });
-
-      // পেজ প্রথমবার লোড হওয়ার সময় বা মাস্টার রিসেটের পর outputPassword সঠিকভাবে ফরম্যাট করা নিশ্চিত করা
-      outputPassword.innerText = formatPassword(inputPassword.value || DEFAULT_BASE_PASSWORD);
-
-      // অটো-ক্লিয়ার হিস্টরি শিডিউলার শুরু করা
       scheduleAutoClearHistory();
     });
   </script>
